@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // Correct answers for each question (multiple possible answers per question)
   // You can fill these in with your own correct answers
   const correctAnswers = {
-    'question1': ['RAM', 'ram', 'Ram', 'Random Access Memory'], // Add correct answers for question 1
-    'question2': ['Broadband', 'broadband', 'broadband internet', 'Broadband Internet'], // Add correct answers for question 2
-    'question3': ['database', 'Database'], // Add correct answers for question 3
-    'question4': ['Spreadsheet', 'spreadsheet', 'spread sheet', 'Spread sheet', 'Spread Sheet'], // Add correct answers for question 4
-    'question5': ['Technical Support', 'technical support', 'Technical support', 'IT support', 'IT Support', 'it suppport'], // Add correct answers for question 5
-    'question6': ['Server', 'server', 'Remote server', 'remote server'], // Add correct answers for question 6
-    'question7': ['Software', 'software'], // Add correct answers for question 7
-    'question8': ['Processor', 'processor', 'CPU', 'cpu'], // Add correct answers for question 8
-    'question9': ['Web Browser', 'web browser', 'Browser', 'browser', 'Web browser', 'Web-browser', 'web-browser'], // Add correct answers for question 9
-    'question10': ['Web designer', 'web desiger', 'Web Designer', 'Web-Designer', 'web-designer', 'Web-designer', 'Web Designer'] // Add correct answers for question 10
+    'question1': ['server', 'Server'], // Add correct answers for question 1
+    'question2': ['souvenir', 'Souvenir'], // Add correct answers for question 2
+    'question3': ['bracelet', 'Bracelet'], // Add correct answers for question 3
+    'question4': ['immigrants', 'Immigrants', 'immigrant', 'Immigrant'], // Add correct answers for question 4
+    'question5': ['polite', 'Polite'], // Add correct answers for question 5
+    'question6': ['starving', 'Starving'], // Add correct answers for question 6
+    'question7': ['wrapped', 'Wrapped'], // Add correct answers for question 7
+    'question8': ['local', 'Local'], // Add correct answers for question 8
+    'question9': ['popular', 'Popular'], // Add correct answers for question 9
+    'question10': ['fries', 'Fries', 'French fries', 'French Fries', 'french fries'] // Add correct answers for question 10
   };
   
   // Utility functions
