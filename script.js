@@ -457,27 +457,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 
-        
-        // Hide results section
-        const resultsSection = document.getElementById('results-section');
-        resultsSection.style.opacity = '0';
-        resultsSection.style.transform = 'translateY(-20px)';
-        
-        setTimeout(() => {
-          resultsSection.style.display = 'none';
-          
-          // Show registration section
-          registrationSection.style.display = 'block';
-          registrationSection.style.opacity = '0';
-          registrationSection.style.transform = 'translateY(20px)';
-          
-          // Trigger reflow and animate in
-          void registrationSection.offsetWidth;
-          registrationSection.style.opacity = '1';
-          registrationSection.style.transform = 'translateY(0)';
-        }, 300);
-      });
-    }
   }
   
   // Run initialization
