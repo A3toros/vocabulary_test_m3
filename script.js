@@ -218,6 +218,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             questionnaireSection.style.opacity = '1';
             questionnaireSection.style.transform = 'translateY(0)';
+            
+            // Save form data after transition
+            saveFormData();
           }, 300);
         }, 1000);
         
@@ -240,6 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
             registrationStatus.textContent = '';
             registrationStatus.className = 'status';
           }
+          // Save form data as user types
+          saveFormData();
         });
       }
     });
@@ -258,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear error styling on input
         questionField.addEventListener('input', function() {
           this.classList.remove('error-field');
+          // Save form data as user types
+          saveFormData();
         });
       }
     }
@@ -356,6 +363,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Populate detailed results
         displayDetailedResults(answers, score);
         
+        // Clear saved form data since test is complete
+        clearSavedData();
+        
         // Hide questionnaire and show results
         questionnaireSection.style.opacity = '0';
         questionnaireSection.style.transform = 'translateY(-20px)';
@@ -370,6 +380,9 @@ document.addEventListener('DOMContentLoaded', function() {
           
           resultsSection.style.opacity = '1';
           resultsSection.style.transform = 'translateY(0)';
+          
+          // Save form data after transition
+          saveFormData();
         }, 300);
         
       } catch (error) {
@@ -456,9 +469,116 @@ document.addEventListener('DOMContentLoaded', function() {
       document.head.appendChild(style);
     }
     
-
+    // Restore saved data and position on page load
+    restoreSavedData();
+  }
+  
+  // Save form data to localStorage
+  function saveFormData() {
+    const formData = {
+      // Save registration data
+      nickname: document.getElementById('nickname')?.value || '',
+      number: document.getElementById('number')?.value || '',
+      
+      // Save questionnaire answers
+      answers: {}
+    };
+    
+    // Save all questionnaire answers
+    for (let i = 1; i <= 10; i++) {
+      const questionField = document.getElementById(`question${i}`);
+      if (questionField) {
+        formData.answers[`question${i}`] = questionField.value || '';
+      }
+    }
+    
+    // Save current section
+    if (registrationSection.style.display !== 'none') {
+      formData.currentSection = 'registration';
+    } else if (questionnaireSection.style.display !== 'none') {
+      formData.currentSection = 'questionnaire';
+    } else if (document.getElementById('results-section').style.display !== 'none') {
+      formData.currentSection = 'results';
+    }
+    
+    localStorage.setItem('vocabularyTestFormData', JSON.stringify(formData));
+  }
+  
+  // Restore saved data from localStorage
+  function restoreSavedData() {
+    const savedData = localStorage.getItem('vocabularyTestFormData');
+    if (!savedData) return;
+    
+    try {
+      const formData = JSON.parse(savedData);
+      
+      // Restore registration data
+      if (formData.nickname) {
+        const nicknameField = document.getElementById('nickname');
+        if (nicknameField) nicknameField.value = formData.nickname;
+      }
+      
+      if (formData.number) {
+        const numberField = document.getElementById('number');
+        if (numberField) numberField.value = formData.number;
+      }
+      
+      // Restore questionnaire answers
+      if (formData.answers) {
+        for (let i = 1; i <= 10; i++) {
+          const questionField = document.getElementById(`question${i}`);
+          if (questionField && formData.answers[`question${i}`]) {
+            questionField.value = formData.answers[`question${i}`];
+          }
+        }
+      }
+      
+      // Restore position based on saved section
+      if (formData.currentSection === 'questionnaire' && formData.nickname && formData.number) {
+        // User was on questionnaire, show it
+        registrationSection.style.display = 'none';
+        questionnaireSection.style.display = 'block';
+        questionnaireSection.style.opacity = '1';
+        questionnaireSection.style.transform = 'translateY(0)';
+      } else if (formData.currentSection === 'results') {
+        // User was on results, but we can't restore the actual results
+        // Redirect them back to questionnaire if they have data, otherwise to registration
+        if (formData.nickname && formData.number) {
+          registrationSection.style.display = 'none';
+          questionnaireSection.style.display = 'block';
+          questionnaireSection.style.opacity = '1';
+          questionnaireSection.style.transform = 'translateY(0)';
+        } else {
+          // No registration data, go back to registration
+          registrationSection.style.display = 'block';
+          questionnaireSection.style.display = 'none';
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error restoring saved data:', error);
+      // Clear corrupted data
+      localStorage.removeItem('vocabularyTestFormData');
+    }
+  }
+  
+  // Clear saved form data
+  function clearSavedData() {
+    localStorage.removeItem('vocabularyTestFormData');
   }
   
   // Run initialization
   init();
+  
+  // Save form data before page unload/refresh
+  window.addEventListener('beforeunload', function() {
+    saveFormData();
+  });
+  
+  // Also save data when page visibility changes (mobile browsers)
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') {
+      saveFormData();
+    }
+  });
 });
