@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const correctAnswers = {
     'question1': ['board'], // Add correct answers for question 1
     'question2': ['horrified'], // Add correct answers for question 2
-    'question3': ['plunber'], // Add correct answers for question 3
+    'question3': ['plumber'], // Add correct answers for question 3
     'question4': ['crowded'], // Add correct answers for question 4
     'question5': ['dry'], // Add correct answers for question 5
     'question6': ['tasteless'], // Add correct answers for question 6
@@ -456,21 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.head.appendChild(style);
     }
     
-    // Add restart button functionality
-    const restartButton = document.getElementById('restart-button');
-    if (restartButton) {
-      restartButton.addEventListener('click', function() {
-        // Clear stored data
-        localStorage.removeItem('registrationId');
-        localStorage.removeItem('userNickname');
-        
-        // Reset forms
-        if (registrationForm) registrationForm.reset();
-        if (questionnaireForm) questionnaireForm.reset();
-        
-        // Clear status messages
-        if (registrationStatus) registrationStatus.textContent = '';
-        if (questionnaireStatus) questionnaireStatus.textContent = '';
+
         
         // Hide results section
         const resultsSection = document.getElementById('results-section');
