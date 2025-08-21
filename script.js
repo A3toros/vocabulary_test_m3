@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
     'question5': ['comedy'], // Add correct answers for question 5
     'question6': ['horror'], // Add correct answers for question 6
     'question7': ['animation'], // Add correct answers for question 7
-    'question8': ['triller'], // Add correct answers for question 8
+    'question8': ['thriller'], // Add correct answers for question 8
     'question9': ['action'], // Add correct answers for question 9
-    'question10': ['Fantasy'] // Add correct answers for question 10
+    'question10': ['fantasy'] // Add correct answers for question 10
   };
   
   // Utility functions
