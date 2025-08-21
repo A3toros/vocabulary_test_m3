@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // Correct answers for each question (multiple possible answers per question)
   // You can fill these in with your own correct answers
   const correctAnswers = {
-    'question1': ['server', 'Server'], // Add correct answers for question 1
-    'question2': ['souvenir', 'Souvenir'], // Add correct answers for question 2
-    'question3': ['bracelet', 'Bracelet'], // Add correct answers for question 3
-    'question4': ['immigrants', 'Immigrants', 'immigrant', 'Immigrant'], // Add correct answers for question 4
-    'question5': ['polite', 'Polite'], // Add correct answers for question 5
-    'question6': ['starving', 'Starving'], // Add correct answers for question 6
-    'question7': ['wrapped', 'Wrapped'], // Add correct answers for question 7
-    'question8': ['local', 'Local'], // Add correct answers for question 8
-    'question9': ['popular', 'Popular'], // Add correct answers for question 9
-    'question10': ['fries', 'Fries', 'French fries', 'French Fries', 'french fries'] // Add correct answers for question 10
+    'question1': ['board'], // Add correct answers for question 1
+    'question2': ['horrified'], // Add correct answers for question 2
+    'question3': ['plunber'], // Add correct answers for question 3
+    'question4': ['crowded'], // Add correct answers for question 4
+    'question5': ['dry'], // Add correct answers for question 5
+    'question6': ['tasteless'], // Add correct answers for question 6
+    'question7': ['apology'], // Add correct answers for question 7
+    'question8': ['directions'], // Add correct answers for question 8
+    'question9': ['ink'], // Add correct answers for question 9
+    'question10': ['headphones'] // Add correct answers for question 10
   };
   
   // Utility functions
@@ -97,6 +97,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     return score;
+  }
+
+  // Display detailed results showing correct/incorrect words
+  function displayDetailedResults(answers, score) {
+    const resultsContainer = document.getElementById('detailed-results');
+    if (!resultsContainer) return;
+    
+    // Clear previous results
+    resultsContainer.innerHTML = '';
+    
+    // Create results header
+    const resultsHeader = document.createElement('h2');
+    resultsHeader.textContent = 'Detailed Results';
+    resultsHeader.className = 'results-header';
+    resultsContainer.appendChild(resultsHeader);
+    
+    // Create results list
+    const resultsList = document.createElement('div');
+    resultsList.className = 'results-list';
+    
+    // Process each question
+    for (let i = 1; i <= 10; i++) {
+      const questionId = `question${i}`;
+      const userAnswer = answers[questionId] || '';
+      const isCorrect = isAnswerCorrect(questionId, userAnswer);
+      const correctAnswer = correctAnswers[questionId] ? correctAnswers[questionId][0] : '';
+      
+      const resultItem = document.createElement('div');
+      resultItem.className = `result-item ${isCorrect ? 'correct' : 'incorrect'}`;
+      
+      const questionLabel = document.createElement('span');
+      questionLabel.className = 'question-label';
+      questionLabel.textContent = `Word ${i}:`;
+      
+      const userAnswerSpan = document.createElement('span');
+      userAnswerSpan.className = 'user-answer';
+      userAnswerSpan.textContent = userAnswer || '(no answer)';
+      
+      const correctAnswerSpan = document.createElement('span');
+      correctAnswerSpan.className = 'correct-answer';
+      correctAnswerSpan.textContent = correctAnswer;
+      
+      resultItem.appendChild(questionLabel);
+      resultItem.appendChild(userAnswerSpan);
+      
+      // Only show correct answer for incorrect responses
+      if (!isCorrect) {
+        resultItem.appendChild(correctAnswerSpan);
+      }
+      
+      resultsList.appendChild(resultItem);
+    }
+    
+    resultsContainer.appendChild(resultsList);
   }
   
   // Handle registration form submission
@@ -289,33 +343,33 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get the user's nickname from localStorage
         const nickname = localStorage.getItem('userNickname') || 'User';
         
-        // Create a completion container to replace the form
-        const completionContainer = document.createElement('div');
-        completionContainer.className = 'completion-container';
-        
-        // Add the score message with the user's nickname
-        const scoreMessage = document.createElement('div');
+        // Populate the score display
+        const scoreDisplay = document.getElementById('score-display');
         const scoreClass = score >= 7 ? 'high-score' : (score >= 4 ? 'medium-score' : 'low-score');
-        scoreMessage.className = `status score-message ${scoreClass}`;
-        scoreMessage.innerHTML = `
+        scoreDisplay.className = `score-container ${scoreClass}`;
+        scoreDisplay.innerHTML = `
           <div class="score-title">Quiz Results</div>
           <div class="score-value">${score} out of 10</div>
           <div class="score-name">${nickname}</div>
         `;
-        completionContainer.appendChild(scoreMessage);
         
-        // Replace the form with the completion container
-        questionnaireForm.style.opacity = '0';
-        questionnaireForm.style.transform = 'translateY(-20px)';
+        // Populate detailed results
+        displayDetailedResults(answers, score);
+        
+        // Hide questionnaire and show results
+        questionnaireSection.style.opacity = '0';
+        questionnaireSection.style.transform = 'translateY(-20px)';
         
         setTimeout(() => {
-          // Replace the form with the completion container
-          questionnaireForm.parentNode.replaceChild(completionContainer, questionnaireForm);
+          questionnaireSection.style.display = 'none';
+          const resultsSection = document.getElementById('results-section');
+          resultsSection.style.display = 'block';
           
-          // Add animation to the completion container
-          void completionContainer.offsetWidth; // Force reflow
-          completionContainer.style.opacity = '1';
-          completionContainer.style.transform = 'translateY(0)';
+          // Trigger a reflow before setting the opacity to ensure animation works
+          void resultsSection.offsetWidth;
+          
+          resultsSection.style.opacity = '1';
+          resultsSection.style.transform = 'translateY(0)';
         }, 300);
         
       } catch (error) {
@@ -350,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
           from { opacity: 1; transform: translateY(0); }
           to { opacity: 0; transform: translateY(-20px); }
         }
-        #questionnaire-section, #registration-section, .completion-container {
+        #questionnaire-section, #registration-section, #results-section {
           transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
         .status.info {
@@ -358,15 +412,16 @@ document.addEventListener('DOMContentLoaded', function() {
           color: #055160;
           border-left: 4px solid #0dcaf0;
         }
-        .completion-container {
+        #results-section {
           opacity: 0;
           transform: translateY(20px);
         }
-        .score-message {
+        .score-container {
           padding: 25px;
-          margin: 0;
+          margin: 0 0 20px 0;
           text-align: center;
           border-radius: 8px;
+          border: 2px solid;
         }
         .score-title {
           font-size: 1.5rem;
@@ -385,20 +440,57 @@ document.addEventListener('DOMContentLoaded', function() {
         .high-score {
           background-color: #d4edda;
           color: #155724;
-          border: 2px solid #28a745;
+          border-color: #28a745;
         }
         .medium-score {
           background-color: #fff3cd;
           color: #856404;
-          border: 2px solid #ffc107;
+          border-color: #ffc107;
         }
         .low-score {
           background-color: #f8d7da;
           color: #721c24;
-          border: 2px solid #dc3545;
+          border-color: #dc3545;
         }
       `;
       document.head.appendChild(style);
+    }
+    
+    // Add restart button functionality
+    const restartButton = document.getElementById('restart-button');
+    if (restartButton) {
+      restartButton.addEventListener('click', function() {
+        // Clear stored data
+        localStorage.removeItem('registrationId');
+        localStorage.removeItem('userNickname');
+        
+        // Reset forms
+        if (registrationForm) registrationForm.reset();
+        if (questionnaireForm) questionnaireForm.reset();
+        
+        // Clear status messages
+        if (registrationStatus) registrationStatus.textContent = '';
+        if (questionnaireStatus) questionnaireStatus.textContent = '';
+        
+        // Hide results section
+        const resultsSection = document.getElementById('results-section');
+        resultsSection.style.opacity = '0';
+        resultsSection.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          resultsSection.style.display = 'none';
+          
+          // Show registration section
+          registrationSection.style.display = 'block';
+          registrationSection.style.opacity = '0';
+          registrationSection.style.transform = 'translateY(20px)';
+          
+          // Trigger reflow and animate in
+          void registrationSection.offsetWidth;
+          registrationSection.style.opacity = '1';
+          registrationSection.style.transform = 'translateY(0)';
+        }, 300);
+      });
     }
   }
   
