@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // Correct answers for each question (multiple possible answers per question)
   // You can fill these in with your own correct answers
   const correctAnswers = {
-    'question1': ['board'], // Add correct answers for question 1
-    'question2': ['horrified'], // Add correct answers for question 2
-    'question3': ['plumber'], // Add correct answers for question 3
-    'question4': ['crowded'], // Add correct answers for question 4
-    'question5': ['dry'], // Add correct answers for question 5
-    'question6': ['tasteless'], // Add correct answers for question 6
-    'question7': ['apology'], // Add correct answers for question 7
-    'question8': ['directions'], // Add correct answers for question 8
-    'question9': ['ink'], // Add correct answers for question 9
-    'question10': ['headphones'] // Add correct answers for question 10
+    'question1': ['war'], // Add correct answers for question 1
+    'question2': ['science fiction', 'sci-fi'], // Add correct answers for question 2
+    'question3': ['love story', 'romance'], // Add correct answers for question 3
+    'question4': ['western'], // Add correct answers for question 4
+    'question5': ['comedy'], // Add correct answers for question 5
+    'question6': ['horror'], // Add correct answers for question 6
+    'question7': ['animation'], // Add correct answers for question 7
+    'question8': ['triller'], // Add correct answers for question 8
+    'question9': ['action'], // Add correct answers for question 9
+    'question10': ['Fantasy'] // Add correct answers for question 10
   };
   
   // Utility functions
